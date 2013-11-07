@@ -1,0 +1,24 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+ 
+rule "Hello World" dialect "java"
+	no-loop
+    when
+        m : Message( myMessage : message )
+        if (m.getStatus() == 0) do [sayHello]
+    then
+        System.out.println( myMessage );
+        m.setMessage( "Goodbye cruel world" );
+        m.setStatus( Message.GOODBYE );
+        update( m );
+   	then[sayHello]
+   		System.out.println("Hello, I'm here!");
+end
+
+rule "GoodBye"
+    when
+        Message( status == Message.GOODBYE, myMessage : message )
+    then
+        System.out.println( myMessage );
+end
